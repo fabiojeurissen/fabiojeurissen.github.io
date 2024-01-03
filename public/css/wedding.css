@@ -1,0 +1,115 @@
+@font-face {
+    font-family: quaverSerif;
+    src: url('/public/fonts/QuaverSerif.otf');
+}
+
+body {
+    /*background-image: url('/public/images/wedding/bottom_right.png');
+    background-repeat: no-repeat;
+    background-position: bottom right;*/
+    background-color: white;
+    color: #ccc;
+}
+
+#names {
+    padding-top: 5%;
+    width: 250px;
+}
+
+#names img {
+    width: 100%;
+}
+
+#count-downs {
+    font-family: 'Roboto Mono', monospace;
+    color: #25344e;
+    font-size: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+input, button {
+    width: 250px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    outline: none;
+    border: 1px solid #25344e;
+}
+
+button {
+
+}
+
+#top-left {
+    position: fixed;
+    width: 24rem;
+}
+
+#bottom-right {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 36rem;
+}
+
+#question {
+    font-size: 1.5rem;
+    color: #25344e;
+}
+
+.response {
+    color: #25344e;
+    font-size: 1.5rem;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.response.response-success {
+    border: 1px solid #7dc600;
+    background-color: rgba(125, 198, 0, 0.5);
+}
+
+.response.response-error {
+    border: 1px solid darkred;
+    background-color: rgba(139, 0, 0, 0.5);
+}
+
+@media (max-width: 576px)
+{
+    #names {
+        padding-top: 40%;
+    }
+
+    #top-left {
+        position: fixed;
+        width: 40%;
+    }
+
+    #bottom-right {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+    }
+
+    input, button {
+        padding: 1rem 1rem;
+    }
+
+    #question {
+        max-width: 300px;
+    }
+
+    #footer {
+        height: 15%;
+    }
+
+    #count-downs {
+        position: fixed;
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 1rem;
+        padding-bottom: 0;
+    }
+}
+

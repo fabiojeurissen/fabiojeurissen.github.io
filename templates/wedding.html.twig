@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}Fabio Jeurissen{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/general.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/wedding.css') }}?4">
+</head>
+<body>
+    <img id="top-left" src="{{ asset('images/wedding/top_left.png') }}" alt="">
+    <img id="bottom-right" src="{{ asset('images/wedding/bottom_right.png') }}" alt="">
+    <div class="h-100 flex flex-column flex-center">
+        <div id="names">
+            <img src="{{ asset('images/wedding/names.png') }}" alt="Senna & Fabio">
+        </div>
+        <div id="question-wrapper" class="h-100 flex flex-column flex-center" style="flex-grow: 1;">
+            <div id="question">Geef hieronder je naam in om ons te laten weten of je er bij zal zijn.</div>
+            <input name="names" type="text" placeholder="Namen">
+            <button type="button" onclick="submitNames(true);">is/zijn er bij</button>
+            <button type="button" onclick="submitNames(false);">kan/kunnen er niet bij zijn</button>
+        </div>
+        <div id="footer">
+            <div id="count-downs" class="flex flex-column mt-2 mr-3">
+                <div class="flex flex-end">
+                    <div id="countdown-party"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="{{ asset('js/jquery_3.6.0.min.js') }}"></script>
+    <script type="text/javascript">
+        updateCountDownTimer();
+
+        let countDownTimer = setInterval(function() {
+            updateCountDownTimer();
+        }, 1000);
+
+        function updateCountDownTimer() {
+            try {
+                let distance = new Date('2023-06-24 18:30:00').getTime() - new Date().getTime();
+                let days = pad(Math.floor(distance / (1000 * 60 * 60 * 24)));
+                let hours = pad(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+                let minutes = pad(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+                let seconds = pad(Math.floor((distance % (1000 * 60)) / 1000));
+
+                if (distance < 0) {
+                    clearInterval(countDownTimer);
+                    $('#countdown-party').remove();
+                    return;
+                }
+
+                if (0 === days) {
+                    $('#countdown-party').html(hours + 'u ' + minutes + 'm ' + seconds + 's ');
+                } else {
+                    $('#countdown-party').html(days + 'd ' + hours + 'u ' + minutes + 'm ' + seconds + 's ');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        function pad(num) {
+            return num.toString().padStart(2, '0');
+        }
+        
+        function submitNames(present) {
+            $.ajax({
+                url: '{{ path('ajax_wedding') }}',
+                method: 'POST',
+                data: {
+                    names: $('[name="names"]').val(),
+                    present
+                },
+                success: function(response) {
+                    if (present) {
+                        $('#question-wrapper').html(`
+                            <div class="response response-success">Je antwoord werd goed ontvangen.<br />Tot dan!</div>
+                        `);
+                    } else {
+                        $('#question-wrapper').html(`
+                            <div class="response response-success">Je antwoord werd goed ontvangen.<br />Jammer dat je er niet bij kan zijn.</div>
+                        `);
+                    }
+                },
+                error: function() {
+                    $('#question-wrapper').html(`
+                        <div class="response response-error">
+                            Er ging iets mis bij het opslaan van je antwoord.
+                        </div>
+                    `);
+                }
+            });
+        }
+    </script>
+</html>
+

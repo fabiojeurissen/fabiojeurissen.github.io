@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200;300;400;500;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Gemunu Libre', sans-serif;
+    color: #e7e7e7;
+    background-color: #242d34;
+    display: flex;
+    flex-direction: column;
+}
+
+button[type="button"] {
+    cursor: pointer;
+}
+
+button.btn {
+    border-radius: 6px;
+    padding: 0.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0.9;
+}
+button.btn:hover {
+    opacity: 1;
+}
+
+button.btn.btn-primary {
+    background-color: white;
+    border: 1px solid white;
+    color: #242d34;
+}
+
+.labelled-input {
+    display: flex;
+    margin: 0.25rem 0;
+}
+
+.labelled-input label {
+    flex-grow: 1;
+    max-width: 50%;
+    text-align: right;
+    padding-right: 0.5rem;
+}
+
+.labelled-input input {
+    outline: none;
+}
+
+.link {
+    display: inline;
+}
+
+.link.link-primary {
+    color: white;
+    cursor: pointer;
+}
+.link.link-primary:hover {
+    color: white;
+}
+
+.alert.alert-danger {
+    padding: 0.5rem;
+    border: 1px solid #731818;
+    background: #d5423e;
+    color: #731818;
+}
+
+.alert.alert-danger:empty {
+    display: none;
+}
+
+a {
+    color: #e7e7e7;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+}
+
+#page-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 80%;
+    background-color: white;
+}

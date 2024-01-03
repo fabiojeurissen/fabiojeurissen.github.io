@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game{% endblock %}
+{% block stylesheets %}
+    <style>
+        #controls {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+        }
+
+        #controls .controls-block {
+            background-color: #DDDDDD;
+        }
+
+        #controls .button:hover {
+            background-color: #b3b3b3;
+            cursor: pointer;
+        }
+
+    </style>
+{% endblock %}
+{% block body %}
+{% endblock %}
+{% block javascripts %}
+    <script type="module" src="{{ asset('js/game/game.js') }}"></script>
+{% endblock %}

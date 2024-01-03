@@ -1,0 +1,3 @@
+#index:
+#    path: /
+#    controller: Bots\Controller\DefaultController::index

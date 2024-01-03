@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Fabio Jeurissen{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/general.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <script type="text/javascript" src="{{ asset('js/jquery_3.6.0.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

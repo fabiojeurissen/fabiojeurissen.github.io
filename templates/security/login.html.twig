@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+{% block body %}
+    <div class="flex-column flex-center h-100">
+        <div class="flex-column" style="align-items: center; justify-content: end; flex-grow: 1;">
+            <div class="text-uppercase text-center mb-4 text-lg">Welkom</div>
+        </div>
+        <div class="flex-column" style="align-items: center; flex-grow: 2;">
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <div id="button-wrapper" class="flex-column">
+                <button class="btn btn-primary" type="button" style="width: 200px;" onclick="showLoginForm();">Login</button>
+                <button class="btn btn-primary mt-2" type="button" style="width: 200px;" onclick="showRegistrationForm();">Registreer</button>
+            </div>
+
+            <div id="login-form" class="flex-column" style="display: none;">
+                <form method="POST">
+                    <div class="labelled-input">
+                        <label for="login-email">Email</label>
+                        <input id="login-email" type="email" name="email">
+                    </div>
+                    <div class="labelled-input">
+                        <label for="login-password">Wachtwoord</label>
+                        <input id="login-password" type="password" name="password">
+                    </div>
+                    <div class="mt-3 flex flex-end">
+                        <button class="btn btn-primary float-right c-pointer" type="submit">Login</button>
+                    </div>
+                    <div class="text-center mt-4">
+                        Nog geen account?
+                        <div class="link link-primary" onclick="showRegistrationForm();">Registreer</div>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
+            </div>
+
+            <div id="register-form" class="flex-column" style="display: none;">
+                <div class="labelled-input">
+                    <label for="email">Email</label>
+                    <input id="email" type="email">
+                </div>
+                <div class="labelled-input">
+                    <label for="username">Naam</label>
+                    <input id="username" type="text">
+                </div>
+                <div class="labelled-input">
+                    <label for="password">Wachtwoord</label>
+                    <input id="password" type="password">
+                </div>
+                <div class="labelled-input">
+                    <label for="password-confirm">Bevestig wachtwoord</label>
+                    <input id="password-confirm" type="password">
+                </div>
+                <div class="mt-3 flex flex-end">
+                    <button class="btn btn-primary float-right c-pointer" type="button" onclick="submitRegistrationForm();">Registreer</button>
+                </div>
+                <div class="text-center mt-4">
+                    Heb je al een account?
+                    <div class="link link-primary" onclick="showLoginForm();">Login</div>
+                </div>
+            </div>
+
+            <div class="my-4">
+                <div id="error-message" class="alert alert-danger"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function showLoginForm() {
+            $('#button-wrapper').hide();
+            $('#register-form').hide();
+            $('#login-form').fadeIn();
+        }
+
+        function showRegistrationForm() {
+            $('#button-wrapper').hide();
+            $('#login-form').hide();
+            $('#register-form').fadeIn();
+        }
+
+        function submitLoginForm() {
+            const email = $('#login-email').val().trim();
+            const password = $('#login-password').val().trim();
+
+            $.ajax({
+                url: '{{ path('login') }}',
+                method: 'POST',
+                data: {
+                    email,
+                    password,
+                    _csrf_token: '{{ csrf_token('authenticate') }}'
+                },
+                success: function(response) {
+
+                },
+                error: function() {
+
+                }
+            });
+        }
+
+        function submitRegistrationForm() {
+            const email = $('#email').val().trim();
+            const username = $('#username').val().trim();
+            const password = $('#password').val().trim();
+
+            if (!isValidEmail(email) || !isValidUserName(username) || !isValidPassword(password, $('#password-confirm').val().trim())) {
+                return;
+            } else {
+                clearErrorMessage();
+            }
+
+            $.ajax({
+                url: '{{ path('register') }}',
+                method: 'POST',
+                data: {
+                    email,
+                    username,
+                    password,
+                    _csrf_token: '{{ csrf_token('authenticate') }}'
+                },
+                success: function(response) {
+
+                },
+                error: function() {
+
+                }
+            });
+        }
+
+        function isValidEmail(email) {
+            if (0 === email.length) {
+                logErrorMessage('Geef een geldig email adres in');
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email)) {
+                logErrorMessage('Dit is geen geldig email adres');
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidUserName(userName) {
+            if (0 === userName.length) {
+                logErrorMessage('Naam mag niet leeg zijn');
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidPassword(password, passwordConfirmation) {
+            if (3 > password.length) {
+                logErrorMessage('Wachtwoord moet minimum 3 tekens bevatten');
+                return false;
+            }
+
+            if (password !== passwordConfirmation) {
+                logErrorMessage('Wachtwoorden komen niet overeen');
+                return false;
+            }
+
+            return true;
+        }
+
+        function logErrorMessage(message) {
+            $('#error-message').html(message);
+        }
+
+        function clearErrorMessage() {
+            $('#error-message').empty();
+        }
+    </script>
+{% endblock %}
